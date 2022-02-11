@@ -1,0 +1,25 @@
+{
+  "car1":{
+    "name":"ford",
+    "model":"mustang",
+    "armchairs":[
+      {"front-left":{
+        "material":"leather",
+        "colour":"black"}
+      },
+      {"front-right":{
+        "material":"leather",
+        "colour":"black"}
+      },
+      {"rear-left":{
+        "material":"leather",
+        "colour":"black"}
+      },
+      {"rear-right":{
+        "material":"leather",
+        "colour":"black"}
+      }
+    ],
+    "engineCapacity":"4.6"
+  }
+}
