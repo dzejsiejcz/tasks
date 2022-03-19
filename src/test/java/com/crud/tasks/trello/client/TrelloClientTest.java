@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
@@ -24,7 +23,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-@MockitoSettings(strictness = Strictness.LENIENT)
 class TrelloClientTest {
     @InjectMocks
     private TrelloClient trelloClient;
@@ -34,7 +32,7 @@ class TrelloClientTest {
     private TrelloConfig trelloConfig;
 
     @Test
-    public void shouldFetchTrelloBoards() throws URISyntaxException {
+    public void shouldFetchTrelloBoards() {
         // Given
         when(trelloConfig.getTrelloApiEndpoint()).thenReturn("http://test.com");
         when(trelloConfig.getTrelloAppKey()).thenReturn("test");
@@ -43,8 +41,6 @@ class TrelloClientTest {
 
         TrelloBoardDto[] trelloBoards = new TrelloBoardDto[1];
         trelloBoards[0] = new TrelloBoardDto("Kodilla", "test_id", new ArrayList<>());
-
-        URI uri = new URI("http://test/com/members/test/boards?key=test&token=test&fields=name,id&llists=all");
 
         when(restTemplate.getForObject(any(), any())).thenReturn(trelloBoards);
         // When
@@ -62,20 +58,10 @@ class TrelloClientTest {
         when(trelloConfig.getTrelloApiEndpoint()).thenReturn("http://test.com");
         when(trelloConfig.getTrelloAppKey()).thenReturn("test");
         when(trelloConfig.getTrelloToken()).thenReturn("test");
-        when(trelloConfig.getTrelloUser()).thenReturn("test");
-        TrelloCardDto trelloCardDto = new TrelloCardDto(
-                "Test task",
-                "Test Description",
-                "top",
-                "test_id"
-        );
+        TrelloCardDto trelloCardDto = new TrelloCardDto("Test task", "Test Description", "top", "test_id");
         URI uri = new URI("http://test.com/cards?key=test&token=test&name=Test%20task&desc=Test%20Description&pos=top&idList=test_id");
 
-        CreatedTrelloCard createdTrelloCard = new CreatedTrelloCard(
-                "1",
-                "test task",
-                "http://test.com"
-        );
+        CreatedTrelloCard createdTrelloCard = new CreatedTrelloCard("1", "test task", "http://test.com");
 
         when(restTemplate.postForObject(uri, null, CreatedTrelloCard.class)).thenReturn(createdTrelloCard);
 
@@ -89,7 +75,7 @@ class TrelloClientTest {
     }
 
     @Test
-    public void shouldReturnEmptyList() throws URISyntaxException {
+    public void shouldReturnEmptyList() {
 
         //Given
         when(trelloConfig.getTrelloApiEndpoint()).thenReturn("http://test.com");
@@ -98,8 +84,6 @@ class TrelloClientTest {
         when(trelloConfig.getTrelloUser()).thenReturn("test");
 
         TrelloBoardDto[] trelloBoards = null;
-
-        URI uri = new URI("http://test/com/members/test/boards?key=test&token=test&fields=name,id&llists=all");
 
         when(restTemplate.getForObject(any(), any())).thenReturn(trelloBoards);
 
