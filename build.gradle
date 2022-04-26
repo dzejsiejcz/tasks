@@ -24,12 +24,12 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 
 
-	compileOnly 'org.projectlombok:lombok:1.18.22'
+	compileOnly 'org.projectlombok:lombok:1.18.24'
 	runtimeOnly 'mysql:mysql-connector-java'
-	runtimeOnly 'org.postgresql:postgresql:42.3.3'
+	runtimeOnly 'org.postgresql:postgresql:42.3.4'
 	annotationProcessor 'org.projectlombok:lombok:1.18.22'
 
-	testCompileOnly 'org.projectlombok:lombok:1.18.22'
+	testCompileOnly 'org.projectlombok:lombok:1.18.24'
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
 
 	implementation 'io.springfox:springfox-swagger2:3.0.0'

@@ -20,10 +20,8 @@ public class EmailScheduler {
     @Scheduled(cron = "0 0 10 * * *")
     private void sendInformationEmail() {
         long size = taskRepository.count();
-        String pluralWord = " tasks.";
-        if (size == 1) {
-            pluralWord = " task.";
-        }
+        String pluralWord;
+        pluralWord = size == 1 ? " task." : " tasks";
         simpleEmailService.send(
                 new Mail(adminConfig.getAdminMail(),
                         null,
