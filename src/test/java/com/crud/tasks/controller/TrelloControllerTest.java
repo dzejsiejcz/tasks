@@ -38,9 +38,6 @@ class TrelloControllerTest {
         when(trelloFacade.fetchTrelloBoards()).thenReturn(List.of());
 
         //When & Then
-
-
-
         mockMvc
                 .perform(MockMvcRequestBuilders
                         .get("/v1/trello/boards")
