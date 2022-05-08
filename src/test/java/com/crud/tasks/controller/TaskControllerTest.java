@@ -16,7 +16,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -49,11 +48,13 @@ public class TaskControllerTest {
     }
 
     @Test
-    void shouldGetTask() throws Exception { //doesn't work
+    void shouldGetTask() throws Exception {
         //Given
         Task task = new Task(1L, "title", "content");
+        TaskDto taskDto = new TaskDto(1L, "title", "content");
 
         when(service.getTask(1L)).thenReturn(task);
+        when(taskMapper.mapToTaskDto(task)).thenReturn(taskDto);
 
         //When & Then
         mockMvc
@@ -61,7 +62,7 @@ public class TaskControllerTest {
                         .get("/v1/tasks/{taskId}", "1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is(200))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.is("1")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.is(1)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.title", Matchers.is("title")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content", Matchers.is("content")));
 
@@ -69,19 +70,56 @@ public class TaskControllerTest {
 
     @Test
     void shouldDeleteTask() throws Exception {
-        //todo
+        //Given
+        Task task = new Task(3L, "new title", "new content");
+
+        when(service.getTask(3L)).thenReturn(task);
+
+        //When & Then
+        mockMvc
+                .perform(MockMvcRequestBuilders
+                        .delete("/v1/tasks/{taskId}", "1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk());
 
     }
 
     @Test
-    void shouldUpdateTask() throws Exception { //doesn't work
+    void shouldUpdateTask() throws Exception {
         //Given
-        Task savedTask = new Task(2L, "updated title", "updated content");
-        when(service.saveTask(any(Task.class))).thenReturn(savedTask);
+        TaskDto taskDto = new TaskDto(2L, "updated title", "updated content");
+        Task task = new Task(2L, "updated title", "updated content");
 
-        TaskDto updatedTaskDto = new TaskDto(2L, "updated title", "updated content");
+        when(taskMapper.mapToTask(any(TaskDto.class))).thenReturn(task);
+        when(service.saveTask(task)).thenReturn(task);
+        when(taskMapper.mapToTaskDto(task)).thenReturn(taskDto);
+
         Gson gson = new Gson();
-        String jsonContent = gson.toJson(updatedTaskDto);
+        String jsonContent = gson.toJson(taskDto);
+
+        //When & Then
+        mockMvc
+                .perform(MockMvcRequestBuilders
+                        .put("/v1/tasks")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
+                        .content(jsonContent))
+                .andExpect(MockMvcResultMatchers.status().is(200))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.is(2)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.title", Matchers.is("updated title")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content", Matchers.is("updated content")));
+    }
+
+    @Test
+    void shouldCreateTask() throws Exception {
+        //Given
+        TaskDto taskDto = new TaskDto(3L, "new title", "new content");
+        Task task = new Task(3L, "new title", "new content");
+
+        when(taskMapper.mapToTask(any(TaskDto.class))).thenReturn(task);
+
+        Gson gson = new Gson();
+        String jsonContent = gson.toJson(taskDto);
 
         //When & Then
         mockMvc
@@ -90,7 +128,7 @@ public class TaskControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("UTF-8")
                         .content(jsonContent))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.is("2")));
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
 }
