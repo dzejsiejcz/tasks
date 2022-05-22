@@ -1,6 +1,7 @@
 package com.crud.tasks.service;
 
 import com.crud.tasks.domain.Mail;
+import com.crud.tasks.domain.TypeOfMail;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.pretty.MessageHelper;
@@ -59,7 +60,11 @@ public class SimpleEmailService {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(mail.getMailTo());
         mailMessage.setSubject(mail.getSubject());
-        mailMessage.setText(mailCreatorService.buildTrelloCardEmail(mail.getMessage()));
+        if (mail.getType().equals(TypeOfMail.CREATED_TASK)){
+            mailMessage.setText(mailCreatorService.buildTrelloCardEmail(mail.getMessage()));
+        } else {
+            mailMessage.setText(mailCreatorService.buildTaskDailyMail(mail.getMessage()));
+        }
         return mailMessage;
     }
 }

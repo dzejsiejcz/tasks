@@ -2,6 +2,7 @@ package com.crud.tasks.scheduler;
 
 import com.crud.tasks.config.AdminConfig;
 import com.crud.tasks.domain.Mail;
+import com.crud.tasks.domain.TypeOfMail;
 import com.crud.tasks.repository.TaskRepository;
 import com.crud.tasks.service.SimpleEmailService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,8 @@ public class EmailScheduler {
     private final TaskRepository taskRepository;
     private final AdminConfig adminConfig;
 
-    @Scheduled(cron = "0 0 10 * * *")
+    @Scheduled(fixedDelay = 30000)
+    @Scheduled(cron = "0 0 8 ? * *")
     private void sendInformationEmail() {
         long size = taskRepository.count();
         String pluralWord;
@@ -26,7 +28,7 @@ public class EmailScheduler {
                 new Mail(adminConfig.getAdminMail(),
                         null,
                         SUBJECT,
-                        "Currently in database you got: " + size + pluralWord)
+                        "Currently in database you got: " + size + pluralWord, TypeOfMail.DAILY)
         );
     }
 }
