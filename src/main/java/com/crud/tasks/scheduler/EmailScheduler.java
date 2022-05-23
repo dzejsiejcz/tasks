@@ -2,7 +2,6 @@ package com.crud.tasks.scheduler;
 
 import com.crud.tasks.config.AdminConfig;
 import com.crud.tasks.domain.Mail;
-import com.crud.tasks.domain.TypeOfMail;
 import com.crud.tasks.repository.TaskRepository;
 import com.crud.tasks.service.SimpleEmailService;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +27,7 @@ public class EmailScheduler {
                 new Mail(adminConfig.getAdminMail(),
                         null,
                         SUBJECT,
-                        "Currently in database you got: " + size + pluralWord, TypeOfMail.DAILY)
+                        "Currently in database you got: " + size + pluralWord)
         );
     }
 }

@@ -30,8 +30,8 @@ public class TrelloService {
                 null,
                 SUBJECT,
                 "New card: " + trelloCardDto.getName() + " has been created on your Trello account",
-
-                TypeOfMail.CREATED_TASK)));
+                newCard.getShortUrl()
+        )));
         return newCard;
     }
 
