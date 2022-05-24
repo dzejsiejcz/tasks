@@ -2,7 +2,9 @@ package com.crud.tasks.service;
 
 import com.crud.tasks.config.AdminConfig;
 import com.crud.tasks.config.CompanyConfig;
+
 import com.crud.tasks.domain.Mail;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -64,8 +66,11 @@ public class MailCreatorService {
         context.setVariable("tasks_url", "https://dzejsiejcz.github.io");
         context.setVariable("button", "Visit all tasks");
         context.setVariable("show_button", true);
+        context.setVariable("company_name", companyConfig.getCompanyName());
+        context.setVariable("company_goal", companyConfig.getCompanyGoal());
+        context.setVariable("company_email", companyConfig.getCompanyEmail());
+        context.setVariable("company_phone", companyConfig.getCompanyPhone());
         context.setVariable("admin_config", adminConfig);
-        context.setVariable("application_functionality", functionality);
         context.setVariable("goodbye", "Keep smile");
         context.setVariable("company_name", companyConfig.getCompanyName());
         context.setVariable("company_goal", companyConfig.getCompanyGoal());
